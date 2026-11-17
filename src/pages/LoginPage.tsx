@@ -18,13 +18,22 @@ export function LoginPage() {
     event.preventDefault();
     setError('');
     setSubmitting(true);
-    const { error: loginError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-    setSubmitting(false);
-    if (loginError) {
-      setError(loginError.status === 401 ? getAuthErrorMessage(loginError) : 'E-mail ou senha inválidos.');
-      return;
+    try {
+      const { error: loginError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      if (loginError) {
+        setError(getAuthErrorMessage(loginError));
+        return;
+      }
+      navigate(state?.from?.pathname || '/dashboard', { replace: true });
+    } catch (requestError) {
+      setError(
+        requestError instanceof Error
+          ? `Não foi possível concluir o login: ${requestError.message}`
+          : 'Não foi possível concluir o login. Verifique sua conexão e tente novamente.',
+      );
+    } finally {
+      setSubmitting(false);
     }
-    navigate(state?.from?.pathname || '/dashboard', { replace: true });
   }
 
   return (
