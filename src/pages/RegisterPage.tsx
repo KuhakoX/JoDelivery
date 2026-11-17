@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import type { Sex } from '../lib/database.types';
+import { getAuthErrorMessage } from '../lib/authError';
 import { supabase } from '../lib/supabase';
 
 const sexOptions: { value: Sex; label: string }[] = [
@@ -31,7 +32,7 @@ export function RegisterPage() {
     });
     setSubmitting(false);
     if (signUpError) {
-      setError(signUpError.message);
+      setError(getAuthErrorMessage(signUpError));
       return;
     }
     if (data.user?.identities?.length === 0) {

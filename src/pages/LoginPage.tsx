@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { getAuthErrorMessage } from '../lib/authError';
 import { supabase } from '../lib/supabase';
 
 type LoginLocationState = { success?: string; from?: { pathname?: string } };
@@ -20,7 +21,7 @@ export function LoginPage() {
     const { error: loginError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setSubmitting(false);
     if (loginError) {
-      setError('E-mail ou senha inválidos.');
+      setError(loginError.status === 401 ? getAuthErrorMessage(loginError) : 'E-mail ou senha inválidos.');
       return;
     }
     navigate(state?.from?.pathname || '/dashboard', { replace: true });
