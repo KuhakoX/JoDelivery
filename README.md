@@ -4,12 +4,12 @@ Aplicação React para deploy na Vercel, com autenticação e PostgreSQL gerenci
 
 ## Executar localmente
 
-1. Crie um projeto no [Supabase](https://supabase.com/) e copie a URL e a chave publicável (anon) do projeto.
-2. Crie `.env` com base em `.env.example`:
+1. Crie um projeto no [Supabase](https://supabase.com/) e copie a URL e a chave **publishable** (prefixo `sb_publishable_`) na área de API Keys do projeto. Projetos antigos também podem usar a chave `anon` pública.
+2. Crie um arquivo `.env`:
 
    ```text
    VITE_SUPABASE_URL=https://seu-projeto.supabase.co
-   VITE_SUPABASE_ANON_KEY=sua-chave-publicavel
+   VITE_SUPABASE_PUBLISHABLE_KEY=sua-chave-publicavel
    ```
 
 3. Execute a migração `supabase/migrations/202611170001_initial_schema.sql` no SQL Editor do Supabase ou via Supabase CLI.
@@ -39,9 +39,9 @@ A página **Administradores** permite que administradores existentes promovam ou
 
 ## Publicar na Vercel
 
-Importe o repositório na Vercel, configure `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` nas variáveis do projeto e publique. A regra em `vercel.json` encaminha rotas do React Router para a aplicação. Configure também no Supabase os URLs de redirect/autenticação para os domínios local e de produção.
+Importe o repositório na Vercel, configure `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` nas variáveis do projeto e publique. A regra em `vercel.json` encaminha rotas do React Router para a aplicação. Configure também no Supabase os URLs de redirect/autenticação para os domínios local e de produção.
 
-Somente a chave publicável do Supabase deve ser usada no navegador. Não adicione `service_role` ao front-end.
+Somente a chave publicável do Supabase deve ser usada no navegador. Nunca configure `service_role` ou uma chave `sb_secret_` em uma variável `VITE_*`; essas chaves dão acesso privilegiado e não são permitidas no browser. A aplicação rejeita essas chaves ao iniciar. Após alterar variáveis na Vercel, faça um novo deploy; no ambiente local, reinicie o servidor `npm run dev`. A variável antiga `VITE_SUPABASE_ANON_KEY` ainda é aceita por compatibilidade, mas deve conter apenas a chave `anon` pública.
 
 ## Escopo
 
