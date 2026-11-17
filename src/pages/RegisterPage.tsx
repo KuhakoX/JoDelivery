@@ -54,23 +54,23 @@ export function RegisterPage() {
         {error && <div className="notice error" role="alert">{error}</div>}
         <form className="form-stack" onSubmit={submit}>
           <label>Nome completo
-            <input type="text" autoComplete="name" minLength={2} maxLength={120} required value={name} onChange={(event) => setName(event.target.value)} />
+            <input id="register-name" name="name" type="text" autoComplete="name" minLength={2} maxLength={120} required value={name} onChange={(event) => setName(event.target.value)} />
           </label>
           <label>E-mail
-            <input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} />
+            <input id="register-email" name="email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} />
           </label>
           <div className="form-row">
             <label>Data de nascimento
-              <input type="date" autoComplete="bday" max={new Date().toISOString().slice(0, 10)} required value={birthDate} onChange={(event) => setBirthDate(event.target.value)} />
+              <input id="register-birth-date" name="birthDate" type="date" max={new Date().toISOString().slice(0, 10)} required value={birthDate} onChange={(event) => setBirthDate(event.target.value)} />
             </label>
             <label>Sexo
-              <select value={sex} onChange={(event) => setSex(event.target.value as Sex)}>
+              <select id="register-sex" name="sex" value={sex} onChange={(event) => setSex(event.target.value as Sex)}>
                 {sexOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
               </select>
             </label>
           </div>
           <label>Senha <span className="field-hint">(mínimo de 8 caracteres)</span>
-            <input type="password" autoComplete="new-password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} />
+            <input id="register-password" name="password" type="password" autoComplete="new-password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} />
           </label>
           <button className="button button-primary button-full" disabled={submitting}>
             {submitting ? 'Criando conta...' : 'Criar conta'}
